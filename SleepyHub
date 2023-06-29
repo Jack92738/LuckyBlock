@@ -1,0 +1,174 @@
+-- // If you want to skid give credits --> https://discord.gg/ybWTDdnnus
+
+-- // Loader
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+-- // Lib Window
+local Window = Library.CreateLib("SleepyHub | LuckyBlock", "Ocean")
+
+-- // Tabs
+local Tab1 = Window:NewTab("Local Player")
+local Tab2 = Window:NewTab("Spawn LuckyBlocks")
+local Tab3 = Window:NewTab("Fun")
+local Tab4 = Window:NewTab("Credits")
+
+-- // Sections
+local Section1 = Tab1:NewSection("Player")
+local Section2 = Tab2:NewSection("Spawn LuckyBlocks of your choice")
+local Section3 = Tab3:NewSection("Teleport")
+local Section4 = Tab4:NewSection("Credits | SleepyHub")
+
+-- // Variables
+local LuckyBlockLoopEnabled = false
+local LuckyBlockLoop
+local Name = game.Players.LocalPlayer
+local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+-- // Button
+Section1:NewSlider("Walkspeed", "Changes your speed", 500, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+Section1:NewSlider("JumpPower", "Changes your JumpPower", 500, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+Section1:NewSlider("Gravity", "Changes your Gravity", 500, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    workspace.Gravity = s
+end)
+
+Section1:NewButton("FPS booster", "Boosting your FPS by deleting in-game objects", function()
+    for _, Tree in next, game.Workspace:GetChildren() do
+        if Tree.Name == 'Tree' then
+            Tree:Destroy()
+        end
+    end
+end)
+
+Section1:NewTextBox("Teleport to player", "Type in only first 3 characters", function(txt)
+    local targetPlayerName = string.lower(string.sub(txt, 1, 3))
+    local targetPlayer = nil
+    
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if string.lower(player.Name):sub(1, 3) == targetPlayerName then
+            targetPlayer = player
+            break
+        end
+    end
+
+    if targetPlayer then
+        local character = targetPlayer.Character
+        if character then
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame
+            end
+        end
+    end
+end)
+
+
+
+
+local ToggleButton = Section2:NewToggle("Spawn yellow LuckyBlock", "Spawns yellow LuckyBlocks", function(enabled)
+    LuckyBlockLoopEnabled = enabled
+    if enabled then
+        LuckyBlockLoop = spawn(function()
+            while LuckyBlockLoopEnabled do
+                game:GetService("ReplicatedStorage"):WaitForChild("SpawnSuperBlock"):FireServer()
+                wait() -- Delay between each spawn, you can adjust this value as needed
+            end
+        end)
+    else
+        if LuckyBlockLoop then
+            LuckyBlockLoop:Destroy()
+            LuckyBlockLoop = nil
+        end
+    end
+end)
+
+local ToggleButton = Section2:NewToggle("Spawn Diamond LuckyBlocks", "Spawns Diamond LuckyBlocks", function(enabled)
+    LuckyBlockLoopEnabled = enabled
+    if enabled then
+        LuckyBlockLoop = spawn(function()
+            while LuckyBlockLoopEnabled do
+                game:GetService("ReplicatedStorage"):WaitForChild("SpawnDiamondBlock"):FireServer()
+                wait() 
+            end
+        end)
+    else
+        if LuckyBlockLoop then
+            LuckyBlockLoop:Destroy()
+            LuckyBlockLoop = nil
+        end
+    end
+end)
+
+local ToggleButton = Section2:NewToggle("Spawn Rainbow LuckyBlocks", "Spawns Raimbow LuckyBlocks", function(enabled)
+    LuckyBlockLoopEnabled = enabled
+    if enabled then
+        LuckyBlockLoop = spawn(function()
+            while LuckyBlockLoopEnabled do
+                game:GetService("ReplicatedStorage"):WaitForChild("SpawnRainbowBlock"):FireServer()
+                wait() 
+            end
+        end)
+    else
+        if LuckyBlockLoop then
+            LuckyBlockLoop:Destroy()
+            LuckyBlockLoop = nil
+        end
+    end
+end)
+
+local ToggleButton = Section2:NewToggle("Spawn Galaxy LuckyBlocks", "Spawns Galaxy LuckyBlocks", function(enabled)
+    LuckyBlockLoopEnabled = enabled
+    if enabled then
+        LuckyBlockLoop = spawn(function()
+            while LuckyBlockLoopEnabled do
+                game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
+                wait() 
+            end
+        end)
+    else
+        if LuckyBlockLoop then
+            LuckyBlockLoop:Destroy()
+            LuckyBlockLoop = nil
+        end
+    end
+end)
+
+Section3:NewButton("Teleport to VoidBlock", "Teleport to VoidBlock", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.CenterBlocks.Givers.VoidGiver.GUI.CFrame
+end)
+
+Section3:NewButton("Teleport to Safe spot", "Teleport to Safe spot", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Wedge.CFrame
+end)
+
+Section3:NewButton("Teleport to player (slave wynnech made that)", "slaves discord: wynnech", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Jack92738/ObfucatedTP/main/AntiSkid', true))()
+end)
+
+
+Section3:NewButton("Kill all (Hex Spitter required)", "Item Hex Spitter is required to run that script", function()
+    local HexSpitter = game.Players.LocalPlayer.Character.HexSpitter
+    local ServerControl = HexSpitter.Remotes.ServerControl
+    for _ = 1, 20 do
+        for _, Child in next, game.Players:GetPlayers() do
+            if Child ~= game.Players.LocalPlayer then
+                ServerControl:InvokeServer('RayHit', {['Position'] = Vector3.new(0, 0, 0), ["Hit"] = Child.Character.Head})
+            end
+        end
+    end
+end)
+
+Section4:NewButton("Discord (click to copy)", "Join our discord fagg", function()
+    setclipboard('https://discord.gg/ybWTDdnnus')
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Succesfully!"; -- the title (ofc)
+        Text = "Succesfully copied discord invite link"; -- what the text says (ofc)
+        Icon = "rbxassetid://57254792"; -- the image if u want. 
+        Duration = 5; -- how long the notification should in secounds
+    })
+end)
